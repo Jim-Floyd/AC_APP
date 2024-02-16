@@ -7,6 +7,9 @@ from django.contrib.auth.models import AbstractUser
 class Position(models.Model):
     position_name = models.CharField(max_length = 20)
 
+    def __str__(self):
+        return self.position_name
+
 class User(AbstractUser):
     username = models.CharField(max_length=200, unique=True, null=True)
     avatar = models.ImageField(null=True, default="avatar.svg")
@@ -14,35 +17,56 @@ class User(AbstractUser):
         Position, on_delete=models.SET_NULL, null=True, related_name="position_holder"
     )
 
+    def __str__(self):
+        return self.username
+
 
 class Ac_model_brand(models.Model):
     name = models.CharField(max_length = 20)
 
+    def __str__(self):
+        return self.name
+
 class Ac_model_type(models.Model):
     name = models.CharField(max_length = 20)
 
+    def __str__(self):
+        return self.name
+
 class Ac_model(models.Model):
     model_name = models.CharField(max_length = 50)
-    model_brand = models.Foreign_Key(Ac_model_brand, on_delete=models.CASCADE)
-    model_type = models.Foreign_Key(Ac_model_type, on_delete=models.CASCADE)
+    model_brand = models.ForeignKey(Ac_model_brand, on_delete=models.CASCADE)
+    model_type = models.ForeignKey(Ac_model_type, on_delete=models.CASCADE)
     model_price = models.IntegerField()
     model_margin = models.IntegerField()
     model_cash_price = models.IntegerField()
     model_dealer_price = models.IntegerField()
     price_since = models.DateTimeField()
 
+    def __str__(self):
+        return self.model_name
+
 
 class Ac_warehouse(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=25)
     warehouse_holder = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="owned_warehouse")
     model_amount = models.IntegerField()
     model = models.ManyToManyField(Ac_model, related_name="warehouse")
 
+    def __str__(self):
+        return self.name
+
 class Ac_payment_type(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
 
 class Ac_payment_status(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=25)
+
+    def __str__(self):
+        return self.name
 
 
 class Ac_app(models.Model):
@@ -60,7 +84,7 @@ class Ac_app(models.Model):
     warehouse = models.ForeignKey(Ac_warehouse, on_delete=models.CASCADE, related_name="apps")
     note = models.CharField(max_length = 70)
     updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     is_canceled = models.BooleanField(default=False)
     canceled_at = models.DateTimeField()
     is_shipped = models.BooleanField(default=False)
@@ -77,6 +101,8 @@ class Ac_app(models.Model):
     returned_payment_why = models.CharField(max_length = 70)
     manager_debt = models.IntegerField()
     
+    def __str__(self):
+        return self.number
 
 
 
