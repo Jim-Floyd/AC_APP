@@ -10,6 +10,13 @@ class Position(models.Model):
     def __str__(self):
         return self.position_name
 
+
+class User_team(models.Model):
+    team_name = models.CharField(max_length = 20)
+
+    def __str__(self):
+        return self.team_name
+
 class User(AbstractUser):
     username = models.CharField(max_length=200, unique=True, null=True)
     avatar = models.ImageField(null=True, default="avatar.svg")
@@ -83,26 +90,26 @@ class Ac_app(models.Model):
     payment_status = models.ForeignKey(Ac_payment_status, on_delete=models.CASCADE, related_name="apps")
     warehouse = models.ForeignKey(Ac_warehouse, on_delete=models.CASCADE, related_name="apps")
     note = models.CharField(max_length = 70)
-    updated_at = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     is_canceled = models.BooleanField(default=False)
-    canceled_at = models.DateTimeField()
-    is_shipped = models.BooleanField(default=False)
-    shipped_at = models.DateTimeField()
-    returned_amount = models.IntegerField()
-    returned_at = models.DateTimeField()
-    paid_summ = models.IntegerField()
-    paid_at = models.DateTimeField()
-    paid_by_contr_summ = models.IntegerField()
-    paid_by_contr_at = models.DateTimeField()
-    contr_num = models.CharField(max_length = 70)
-    returned_payment = models.IntegerField()
-    returned_payment_at = models.DateTimeField()
-    returned_payment_why = models.CharField(max_length = 70)
-    manager_debt = models.IntegerField()
+    canceled_at = models.DateTimeField(null=True, blank=True)
+    is_shipped = models.BooleanField(default=False, null=True, blank=True)
+    shipped_at = models.DateTimeField(null=True, blank=True)
+    returned_amount = models.IntegerField(null=True, blank=True)
+    returned_at = models.DateTimeField(null=True, blank=True)
+    paid_summ = models.IntegerField(null=True, blank=True)
+    paid_at = models.DateTimeField(null=True, blank=True)
+    paid_by_contr_summ = models.IntegerField(null=True, blank=True)
+    paid_by_contr_at = models.DateTimeField(null=True, blank=True)
+    contr_num = models.CharField(max_length = 70, null=True, blank=True)
+    returned_payment = models.IntegerField(null=True, blank=True)
+    returned_payment_at = models.DateTimeField(null=True, blank=True)
+    returned_payment_why = models.CharField(max_length = 70, null=True, blank=True)
+    manager_debt = models.IntegerField(null=True, blank=True)
     
     def __str__(self):
-        return self.number
+        return str(self.number)
 
 
 
